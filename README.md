@@ -1,6 +1,6 @@
-# fundrive-skills
+# fundrive-agents
 
-面向 AI Agent（Antigravity / Codex / Claude Code 等）的 [fundrive](https://github.com/farfarfun-drive/fundrive) 生态 Skill 集合，按 `skills/<skill-name>/` 目录组织，可在一个仓库内持续扩展多个 Skill。
+面向 AI Agent（Antigravity / Codex / Claude Code 等）的 [fundrive](https://github.com/farfarfun-drive/fundrive) 生态 `.agents` 配置与多 Skill 仓库。仓库根目录直接对应项目的 `.agents/` 目录布局，可直接 `git clone` 为目标项目的 `.agents` 目录开箱即用，也可在一个仓库内持续扩展多个 `skills/*`、`rules/*` 等。
 
 ## Skills
 
@@ -11,7 +11,7 @@
 ## 目录结构
 
 ```text
-fundrive-skills/
+.agents/  (即 fundrive-agents 仓库根目录)
 ├── .github/workflows/validate.yml   # 自动校验所有 skills/*/SKILL.md、openai.yaml 与相对链接
 ├── skills/
 │   └── <skill-name>/
@@ -22,23 +22,29 @@ fundrive-skills/
 └── README.md
 ```
 
-## 安装
+## 安装与使用
 
-### 方式一：使用 `skills` CLI（推荐）
+### 方式一：直接克隆为项目的 `.agents` 目录（推荐，Antigravity / 通用工作区）
+
+在项目根目录执行：
 
 ```bash
-npx skills add farfarfun-drive/fundrive-skills
+git clone https://github.com/farfarfun-drive/fundrive-agents.git .agents
 ```
 
-### 方式二：克隆并安装到本地 Agent 目录
+> 若不希望把 `.agents/` 提交到宿主仓库，将其加入宿主仓库的 `.gitignore` 即可；后续在 `.agents/` 内 `git pull` 即可同步最新 Skill。
+
+### 方式二：使用 `skills` CLI
 
 ```bash
-git clone https://github.com/farfarfun-drive/fundrive-skills.git
-cd fundrive-skills
+npx skills add farfarfun-drive/fundrive-agents
+```
 
-# Antigravity（项目级）
-mkdir -p /path/to/your-project/.agents/skills
-cp -R skills/* /path/to/your-project/.agents/skills/
+### 方式三：安装到全局 Agent 目录（Codex / Claude Code）
+
+```bash
+git clone https://github.com/farfarfun-drive/fundrive-agents.git
+cd fundrive-agents
 
 # Codex（全局软链，拉取仓库后自动生效）
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
