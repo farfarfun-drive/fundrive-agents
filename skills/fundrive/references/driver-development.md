@@ -74,13 +74,13 @@ apps/fundrive/src/fundrive/drives/<name>/
    - 在 `apps/fundrive/tests/test_<name>_drive.py` 补充单元测试，用 mock 覆盖核心读写路径与错误边界，确保在裸环境（`uv sync --group dev`）下可直接运行通过。
    - 同步更新 `apps/fundrive/README.md` 的驱动状态总览表。
 
-## 3. 开发四个独立驱动包（`fundrives.*`）
+## 3. 开发五个独立驱动包（`fundrives.*`）
 
-- **PEP 420 命名空间约束**：`apps/fundrive-{alipan,baidu,lanzou,quark}/src/fundrives/` 下**绝对不能**放 `__init__.py`；所有包内代码放在 `src/fundrives/<portion>/` 中。
+- **PEP 420 命名空间约束**：`apps/fundrive-{alipan,baidu,lanzou,pan115,quark}/src/fundrives/` 下**绝对不能**放 `__init__.py`；所有包内代码放在 `src/fundrives/<portion>/` 中。
 - **兼容性**：
-  - `fundrive-alipan`：`requires-python = ">=3.12"`
+  - `fundrive-alipan` / `fundrive-pan115`：`requires-python = ">=3.12"`
   - `fundrive-baidu` / `fundrive-lanzou` / `fundrive-quark`：`requires-python = ">=3.10"`，CI 会在最低 Python 版本上跑 `test-floor` 任务，禁止使用高于下界的语法或标准库 API。
-- **核心库联动**：若修改了 `fundrives.{aliopen,baidu,lanzou}` 的公共 API，需同步核对 `apps/fundrive/src/fundrive/drives/{alipan,baidu,lanzou}/` 中的适配代码，并在根目录 `.venv` 中 `install-dev all` 联调验证。
+- **核心库联动**：若修改了 `fundrives.{aliopen,baidu,lanzou,pan115}` 的公共 API，需同步核对 `apps/fundrive/src/fundrive/drives/{alipan,baidu,lanzou,pan115}/` 中的适配代码，并在根目录 `.venv` 中 `install-dev all` 联调验证。
 
 ## 4. 统一 Ruff 规则基线
 

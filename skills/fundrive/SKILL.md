@@ -1,6 +1,6 @@
 ---
 name: fundrive
-description: Guide for using and developing the fundrive unified cloud storage ecosystem (core library fundrive and standalone driver packages fundrive-alipan, fundrive-baidu, fundrive-lanzou, fundrive-quark) inside the fundrive-dev workspace. Use this skill when writing code that integrates fundrive drives, installing or configuring cloud storage extras, implementing or fixing a BaseDrive driver, maintaining fundrives.* namespace packages, or performing cross-repo testing, linting, submodule sync, and releases.
+description: Guide for using and developing the fundrive unified cloud storage ecosystem (core library fundrive and standalone driver packages fundrive-alipan, fundrive-baidu, fundrive-lanzou, fundrive-pan115, fundrive-quark) inside the fundrive-dev workspace. Use this skill when writing code that integrates fundrive drives, installing or configuring cloud storage extras, implementing or fixing a BaseDrive driver, maintaining fundrives.* namespace packages, or performing cross-repo testing, linting, submodule sync, and releases.
 ---
 
 # FunDrive 开发与使用指南
@@ -12,7 +12,7 @@ description: Guide for using and developing the fundrive unified cloud storage e
 
 ## 1. 工作区结构速查
 
-编排仓库 [fundrive-dev](https://github.com/farfarfun-drive/fundrive-dev) 本身不含应用源码，通过 Git 子模块管理 5 个纯库包（`package` 类，共用 `scripts/funbuild.toml` 共享版本号）：
+编排仓库 [fundrive-dev](https://github.com/farfarfun-drive/fundrive-dev) 本身不含应用源码，通过 Git 子模块管理 6 个纯库包（`package` 类，共用 `scripts/funbuild.toml` 共享版本号）：
 
 | 别名 | 路径 | PyPI 包 | 命名空间 | 与核心库关系 |
 | --- | --- | --- | --- | --- |
@@ -20,6 +20,7 @@ description: Guide for using and developing the fundrive unified cloud storage e
 | `alipan` | `apps/fundrive-alipan` | `fundrive-alipan` | `fundrives.aliopen` | `fundrive[alipan]` 可选依赖 |
 | `baidu` | `apps/fundrive-baidu` | `fundrive-baidu` | `fundrives.baidu` | `fundrive[baidu]` 可选依赖 |
 | `lanzou` | `apps/fundrive-lanzou` | `fundrive-lanzou` | `fundrives.lanzou` | `fundrive[lanzou]` 可选依赖 |
+| `pan115` | `apps/fundrive-pan115` | `fundrive-pan115` | `fundrives.pan115` | `fundrive[pan115]` 可选依赖 |
 | `quark` | `apps/fundrive-quark` | `fundrive-quark` | `fundrives.quark` | **独立包**，无 `fundrive[quark]` |
 
 权威契约与治理入口：
@@ -57,10 +58,10 @@ drive.download_file(fid="remote_fid", save_dir="./downloads", overwrite=False)
    - `BaseDrive` 方法签名必须与 `src/fundrive/core/base.py` 兼容，保留位置参数顺序并接受 `*args, **kwargs`（由 `tests/test_drive_contract.py` 做 AST 静态检查）。
    - 新增驱动必须同时登记到 `src/fundrive/drives/__init__.py` 的 `DRIVE_SPECS` **与** `__all__`（由 `tests/test_registry.py` 校验）。
    - 所有 HTTP 请求必须显式设置 `timeout`，日志和异常消息禁止输出密钥/token/cookie（由 `test_http_timeouts.py` 与 `test_credential_logging.py` 把关）。
-2. **PEP 420 命名空间禁令（四个驱动包）**：
-   - **严禁**在任何驱动包的 `src/fundrives/` 下创建 `__init__.py`，否则会遮蔽另外三个驱动包。
+2. **PEP 420 命名空间禁令（五个驱动包）**：
+   - **严禁**在任何驱动包的 `src/fundrives/` 下创建 `__init__.py`，否则会遮蔽另外四个驱动包。
 3. **统一 Ruff 基线**：
-   - 5 个 app 的 `[tool.ruff.lint]` `select` 与 `ignore` 必须逐字一致，修改需同步 5 个仓库并跑 `bash scripts/check-lint-baseline.sh`。
+   - 6 个 app 的 `[tool.ruff.lint]` `select` 与 `ignore` 必须逐字一致，修改需同步全部仓库并跑 `bash scripts/check-lint-baseline.sh`。
 4. **子模块提交顺序与发布纪律**：
    - 改动 `apps/<name>` 必须**先在子模块内 commit + push**，再回根仓库 `git add apps/<name>` 提交指针，顺序不可颠倒。
    - 不要手改 `scripts/funbuild.toml` 的版本号；发布统一走 `bash scripts/build.sh`（`funbuild build`）。
@@ -88,5 +89,5 @@ uv run pytest -v
 # 跨 app 联调安装与命名空间共存检查（仓库根目录）
 uv venv
 bash scripts/setup.sh install-dev all
-.venv/bin/python -c "import fundrive, fundrives.aliopen, fundrives.baidu, fundrives.lanzou, fundrives.quark; assert len(list(fundrives.__path__)) == 4"
+.venv/bin/python -c "import fundrive, fundrives.aliopen, fundrives.baidu, fundrives.lanzou, fundrives.pan115, fundrives.quark; assert len(list(fundrives.__path__)) == 5"
 ```

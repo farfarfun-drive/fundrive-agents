@@ -22,7 +22,7 @@ uv add "fundrive[amazon]"     # boto3 + botocore（S3 别名 "s3" / "amazon"）
 uv add "fundrive[google]"     # google-api-python-client + google-auth*
 uv add "fundrive[dropbox]"    # dropbox
 uv add "fundrive[webdav]"     # webdav4
-uv add "fundrive[pan115]"     # p115client + funfile（别名 "pan115" / "115"）
+uv add "fundrive[pan115]"     # fundrive-pan115 + funfile（别名 "pan115" / "115"）
 uv add "fundrive[wenshushu]"  # base58 + pycryptodomex
 
 # 一次性安装全部可选驱动
@@ -31,12 +31,13 @@ uv add "fundrive[all]"
 
 ### 独立使用驱动包
 
-4 个独立驱动包均可脱离核心库单独安装（`baidu` / `lanzou` / `quark` 支持 `Python >= 3.10`，`alipan` 要求 `>= 3.12`）：
+5 个独立驱动包均可脱离核心库单独安装（`baidu` / `lanzou` / `quark` 支持 `Python >= 3.10`，`alipan` / `pan115` 要求 `>= 3.12`）：
 
 ```bash
 uv add fundrive-alipan   # import fundrives.aliopen
 uv add fundrive-baidu    # import fundrives.baidu
 uv add fundrive-lanzou   # import fundrives.lanzou
+uv add fundrive-pan115   # import fundrives.pan115
 uv add fundrive-quark    # import fundrives.quark（独立包，核心库无 quark extra）
 ```
 
