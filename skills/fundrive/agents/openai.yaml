@@ -1,0 +1,4 @@
+interface:
+  display_name: "FunDrive Dev & Usage"
+  short_description: "Use and develop fundrive cloud storage drives and fundrives.* packages"
+  default_prompt: "Use $fundrive to integrate fundrive cloud storage drives, implement or fix a BaseDrive driver, or maintain the fundrive-dev workspace."
