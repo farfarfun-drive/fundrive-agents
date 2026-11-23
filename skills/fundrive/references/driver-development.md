@@ -15,7 +15,7 @@
 # 首次 plain clone 后初始化全部子模块
 bash scripts/init.sh
 
-# 将 5 个子模块统一快进到各仓库 master 最新（手工开发推荐）
+# 将 6 个子模块统一快进到各仓库 master 最新（手工开发推荐）
 git submodule foreach 'git checkout master && git pull --ff-only'
 ```
 
@@ -26,7 +26,7 @@ git submodule foreach 'git checkout master && git pull --ff-only'
 1. **跨 app 联调（仓库根目录 `.venv`）**：
    ```bash
    uv venv
-   bash scripts/setup.sh install-dev all     # 5 个 app 可编辑安装到根 .venv
+   bash scripts/setup.sh install-dev all     # 6 个 app 可编辑安装到根 .venv
    bash scripts/setup.sh install-dev baidu   # 仅装单个 app
    ```
    `scripts/setup.sh` 要求明确目标环境（激活的 venv、根 `.venv` 或 `FUNDRIVE_INSTALL_SYSTEM=1`），不会悄悄装进系统 Python。
@@ -37,7 +37,7 @@ git submodule foreach 'git checkout master && git pull --ff-only'
    uv run pytest -v
    ```
 
-> 依赖不锁死：5 个 app 的 `uv.lock` 均刻意在 `.gitignore` 中，不在版本控制内。
+> 依赖不锁死：6 个 app 的 `uv.lock` 均刻意在 `.gitignore` 中，不在版本控制内。
 
 ## 2. 在 `apps/fundrive` 中新增或修改内置驱动
 
@@ -84,7 +84,7 @@ apps/fundrive/src/fundrive/drives/<name>/
 
 ## 4. 统一 Ruff 规则基线
 
-五个 app 的 `[tool.ruff.lint]` 必须保持逐字相同的基线（详见 [004-known-deviations.md](https://github.com/farfarfun-drive/fundrive-dev/blob/master/docs/project/project-governance/004-known-deviations.md) 第 6 条）：
+六个 app 的 `[tool.ruff.lint]` 必须保持逐字相同的基线（详见 [004-known-deviations.md](https://github.com/farfarfun-drive/fundrive-dev/blob/master/docs/project/project-governance/004-known-deviations.md) 第 6 条）：
 
 ```toml
 select = ["E4", "E7", "E9", "F", "I", "UP", "B", "SIM", "RET", "C4", "PLE", "T100", "S102"]
@@ -119,6 +119,6 @@ git push origin master
 
 ### 发布（共享版本号）
 
-- 构建发布入口是 [build.sh](https://github.com/farfarfun-drive/fundrive-dev/blob/master/scripts/build.sh)（即 `funbuild build`），由它自动递增 `scripts/funbuild.toml` 的共享版本号并向 5 个子模块 fan out 构建、发布和统一 push。
+- 构建发布入口是 [build.sh](https://github.com/farfarfun-drive/fundrive-dev/blob/master/scripts/build.sh)（即 `funbuild build`），由它自动递增 `scripts/funbuild.toml` 的共享版本号并向 6 个子模块 fan out 构建、发布和统一 push。
 - **禁止**手动调低或手工编辑 `scripts/funbuild.toml` 的版本号；版本号只能单调前进。
 - 不要在单个 app 仓库中单独触发非工作区发版。
